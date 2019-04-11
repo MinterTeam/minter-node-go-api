@@ -15,14 +15,14 @@ type EstimateCoinBuyResponse struct {
 	} `json:"result"`
 }
 
-type EstimateCoinSellResponse struct {
+type EstimateCoinSellAllResponse struct {
 	Response
 	Result struct {
 		WillGet string `json:"will_get"`
 	} `json:"result"`
 }
 
-type EstimateCoinSellAllResponse struct {
+type EstimateCoinSellResponse struct {
 	Response
 	Result struct {
 		Commission string `json:"commission"`
