@@ -21,7 +21,7 @@ type Transaction struct {
 	RawTx       string             `json:"raw_tx"`
 	Log         *string            `json:"log"`
 	Data        json.RawMessage    `json:"data"`
-	RawData     interface{}        `json:"-"`
+	IData       interface{}        `json:"-"`
 	Tags        *map[string]string `json:"tags"`
 }
 

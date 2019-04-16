@@ -56,59 +56,59 @@ func (api *MinterNodeApi) GetBlock(height uint64) (*responses.BlockResponse, err
 			case models.TxTypeSend:
 				var txData = models.SendTxData{}
 				err = json.Unmarshal(tx.Data, &txData)
-				response.Result.Transactions[i].RawData = txData
+				response.Result.Transactions[i].IData = txData
 			case models.TxTypeSellCoin:
 				var txData = models.SellCoinTxData{}
 				err = json.Unmarshal(tx.Data, &txData)
-				response.Result.Transactions[i].RawData = txData
+				response.Result.Transactions[i].IData = txData
 			case models.TxTypeSellAllCoin:
 				var txData = models.SellAllCoinTxData{}
 				err = json.Unmarshal(tx.Data, &txData)
-				response.Result.Transactions[i].RawData = txData
+				response.Result.Transactions[i].IData = txData
 			case models.TxTypeBuyCoin:
 				var txData = models.BuyCoinTxData{}
 				err = json.Unmarshal(tx.Data, &txData)
-				response.Result.Transactions[i].RawData = txData
+				response.Result.Transactions[i].IData = txData
 			case models.TxTypeCreateCoin:
 				var txData = models.CreateCoinTxData{}
 				err = json.Unmarshal(tx.Data, &txData)
-				response.Result.Transactions[i].RawData = txData
+				response.Result.Transactions[i].IData = txData
 			case models.TxTypeDeclareCandidacy:
 				var txData = models.DeclareCandidacyTxData{}
 				err = json.Unmarshal(tx.Data, &txData)
-				response.Result.Transactions[i].RawData = txData
+				response.Result.Transactions[i].IData = txData
 			case models.TxTypeDelegate:
 				var txData = models.DelegateTxData{}
 				err = json.Unmarshal(tx.Data, &txData)
-				response.Result.Transactions[i].RawData = txData
+				response.Result.Transactions[i].IData = txData
 			case models.TxTypeUnbound:
 				var txData = models.UnbondTxData{}
 				err = json.Unmarshal(tx.Data, &txData)
-				response.Result.Transactions[i].RawData = txData
+				response.Result.Transactions[i].IData = txData
 			case models.TxTypeRedeemCheck:
 				var txData = models.RedeemCheckTxData{}
 				err = json.Unmarshal(tx.Data, &txData)
-				response.Result.Transactions[i].RawData = txData
+				response.Result.Transactions[i].IData = txData
 			case models.TxTypeSetCandidateOnline:
 				var txData = models.SetCandidateTxData{}
 				err = json.Unmarshal(tx.Data, &txData)
-				response.Result.Transactions[i].RawData = txData
+				response.Result.Transactions[i].IData = txData
 			case models.TxTypeSetCandidateOffline:
 				var txData = models.SetCandidateTxData{}
 				err = json.Unmarshal(tx.Data, &txData)
-				response.Result.Transactions[i].RawData = txData
+				response.Result.Transactions[i].IData = txData
 			case models.TxTypeMultiSig:
 				var txData = models.CreateMultisigTxData{}
 				err = json.Unmarshal(tx.Data, &txData)
-				response.Result.Transactions[i].RawData = txData
+				response.Result.Transactions[i].IData = txData
 			case models.TxTypeMultiSend:
 				var txData = models.MultiSendTxData{}
 				err = json.Unmarshal(tx.Data, &txData)
-				response.Result.Transactions[i].RawData = txData
+				response.Result.Transactions[i].IData = txData
 			case models.TxTypeEditCandidate:
 				var txData = models.EditCandidateTxData{}
 				err = json.Unmarshal(tx.Data, &txData)
-				response.Result.Transactions[i].RawData = txData
+				response.Result.Transactions[i].IData = txData
 			}
 		}
 	}
