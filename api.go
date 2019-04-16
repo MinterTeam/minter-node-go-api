@@ -11,12 +11,17 @@ import (
 )
 
 type MinterNodeApi struct {
-	link string
+	link   string
+	client *fasthttp.Client
 }
 
 func New(link string) *MinterNodeApi {
 	return &MinterNodeApi{
 		link: link,
+		client: &fasthttp.Client{
+			Name:            "Explorer Extender API",
+			MaxConnsPerHost: 1000,
+		},
 	}
 }
 
@@ -50,60 +55,60 @@ func (api *MinterNodeApi) GetBlock(height uint64) (*responses.BlockResponse, err
 			switch tx.Type {
 			case models.TxTypeSend:
 				var txData = models.SendTxData{}
-				err = json.Unmarshal(tx.RawData, &txData)
-				response.Result.Transactions[i].Data = txData
+				err = json.Unmarshal(tx.Data, &txData)
+				response.Result.Transactions[i].RawData = txData
 			case models.TxTypeSellCoin:
 				var txData = models.SellCoinTxData{}
-				err = json.Unmarshal(tx.RawData, &txData)
-				response.Result.Transactions[i].Data = txData
+				err = json.Unmarshal(tx.Data, &txData)
+				response.Result.Transactions[i].RawData = txData
 			case models.TxTypeSellAllCoin:
 				var txData = models.SellAllCoinTxData{}
-				err = json.Unmarshal(tx.RawData, &txData)
-				response.Result.Transactions[i].Data = txData
+				err = json.Unmarshal(tx.Data, &txData)
+				response.Result.Transactions[i].RawData = txData
 			case models.TxTypeBuyCoin:
 				var txData = models.BuyCoinTxData{}
-				err = json.Unmarshal(tx.RawData, &txData)
-				response.Result.Transactions[i].Data = txData
+				err = json.Unmarshal(tx.Data, &txData)
+				response.Result.Transactions[i].RawData = txData
 			case models.TxTypeCreateCoin:
 				var txData = models.CreateCoinTxData{}
-				err = json.Unmarshal(tx.RawData, &txData)
-				response.Result.Transactions[i].Data = txData
+				err = json.Unmarshal(tx.Data, &txData)
+				response.Result.Transactions[i].RawData = txData
 			case models.TxTypeDeclareCandidacy:
 				var txData = models.DeclareCandidacyTxData{}
-				err = json.Unmarshal(tx.RawData, &txData)
-				response.Result.Transactions[i].Data = txData
+				err = json.Unmarshal(tx.Data, &txData)
+				response.Result.Transactions[i].RawData = txData
 			case models.TxTypeDelegate:
 				var txData = models.DelegateTxData{}
-				err = json.Unmarshal(tx.RawData, &txData)
-				response.Result.Transactions[i].Data = txData
+				err = json.Unmarshal(tx.Data, &txData)
+				response.Result.Transactions[i].RawData = txData
 			case models.TxTypeUnbound:
 				var txData = models.UnbondTxData{}
-				err = json.Unmarshal(tx.RawData, &txData)
-				response.Result.Transactions[i].Data = txData
+				err = json.Unmarshal(tx.Data, &txData)
+				response.Result.Transactions[i].RawData = txData
 			case models.TxTypeRedeemCheck:
 				var txData = models.RedeemCheckTxData{}
-				err = json.Unmarshal(tx.RawData, &txData)
-				response.Result.Transactions[i].Data = txData
+				err = json.Unmarshal(tx.Data, &txData)
+				response.Result.Transactions[i].RawData = txData
 			case models.TxTypeSetCandidateOnline:
 				var txData = models.SetCandidateTxData{}
-				err = json.Unmarshal(tx.RawData, &txData)
-				response.Result.Transactions[i].Data = txData
+				err = json.Unmarshal(tx.Data, &txData)
+				response.Result.Transactions[i].RawData = txData
 			case models.TxTypeSetCandidateOffline:
 				var txData = models.SetCandidateTxData{}
-				err = json.Unmarshal(tx.RawData, &txData)
-				response.Result.Transactions[i].Data = txData
+				err = json.Unmarshal(tx.Data, &txData)
+				response.Result.Transactions[i].RawData = txData
 			case models.TxTypeMultiSig:
 				var txData = models.CreateMultisigTxData{}
-				err = json.Unmarshal(tx.RawData, &txData)
-				response.Result.Transactions[i].Data = txData
+				err = json.Unmarshal(tx.Data, &txData)
+				response.Result.Transactions[i].RawData = txData
 			case models.TxTypeMultiSend:
 				var txData = models.MultiSendTxData{}
-				err = json.Unmarshal(tx.RawData, &txData)
-				response.Result.Transactions[i].Data = txData
+				err = json.Unmarshal(tx.Data, &txData)
+				response.Result.Transactions[i].RawData = txData
 			case models.TxTypeEditCandidate:
 				var txData = models.EditCandidateTxData{}
-				err = json.Unmarshal(tx.RawData, &txData)
-				response.Result.Transactions[i].Data = txData
+				err = json.Unmarshal(tx.Data, &txData)
+				response.Result.Transactions[i].RawData = txData
 			}
 		}
 	}
@@ -247,7 +252,7 @@ func (api *MinterNodeApi) PushTransaction(tx string) (*responses.SendTransaction
 }
 
 func (api *MinterNodeApi) getJson(url string, target interface{}) error {
-	_, body, err := fasthttp.Get(nil, url)
+	_, body, err := api.client.Get(nil, url)
 	if err != nil {
 		return err
 	}

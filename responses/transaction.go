@@ -20,8 +20,8 @@ type Transaction struct {
 	ServiceData string             `json:"service_data"`
 	RawTx       string             `json:"raw_tx"`
 	Log         *string            `json:"log"`
-	Data        interface{}        `json:"-"`
-	RawData     json.RawMessage    `json:"data"`
+	Data        json.RawMessage    `json:"data"`
+	RawData     interface{}        `json:"-"`
 	Tags        *map[string]string `json:"tags"`
 }
 
