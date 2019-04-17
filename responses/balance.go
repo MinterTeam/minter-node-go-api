@@ -7,6 +7,8 @@ type Balance struct {
 }
 
 type BalancesResponse struct {
-	Response
-	Result []Balance `json:"result"`
+	Jsonrpc string     `json:"jsonrpc"`
+	ID      string     `json:"id"`
+	Error   *ErrorData `json:"error"`
+	Result  []Balance  `json:"result"`
 }

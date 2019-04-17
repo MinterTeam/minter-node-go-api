@@ -1,8 +1,10 @@
 package responses
 
 type CandidateResponse struct {
-	Response
-	Result struct {
+	Jsonrpc string     `json:"jsonrpc"`
+	ID      string     `json:"id"`
+	Error   *ErrorData `json:"error"`
+	Result  struct {
 		OwnerAddress     string  `json:"owner_address"`
 		RewardAddress    string  `json:"reward_address"`
 		CandidateAddress string  `json:"candidate_address"`
@@ -16,8 +18,10 @@ type CandidateResponse struct {
 }
 
 type BlockCandidatesResponse struct {
-	Response
-	Result []struct {
+	Jsonrpc string     `json:"jsonrpc"`
+	ID      string     `json:"id"`
+	Error   *ErrorData `json:"error"`
+	Result  []struct {
 		RewardAddress  string  `json:"reward_address"`
 		OwnerAddress   string  `json:"owner_address"`
 		TotalStake     string  `json:"total_stake"`

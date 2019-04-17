@@ -3,8 +3,10 @@ package responses
 import "encoding/json"
 
 type TransactionResponse struct {
-	Response
-	Result Transaction `json:"result"`
+	Jsonrpc string      `json:"jsonrpc"`
+	ID      string      `json:"id"`
+	Error   *ErrorData  `json:"error"`
+	Result  Transaction `json:"result"`
 }
 
 type Transaction struct {
@@ -26,8 +28,10 @@ type Transaction struct {
 }
 
 type SendTransactionResponse struct {
-	Response
-	Result *SendTransactionResult `json:"result"`
+	Jsonrpc string                 `json:"jsonrpc"`
+	ID      string                 `json:"id"`
+	Error   *ErrorData             `json:"error"`
+	Result  *SendTransactionResult `json:"result"`
 }
 
 type SendTransactionResult struct {

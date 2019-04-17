@@ -1,8 +1,10 @@
 package responses
 
 type EventsResponse struct {
-	Response
-	Result struct {
+	Jsonrpc string     `json:"jsonrpc"`
+	ID      string     `json:"id"`
+	Error   *ErrorData `json:"error"`
+	Result  struct {
 		Events []event `json:"events"`
 	} `json:"result"`
 }

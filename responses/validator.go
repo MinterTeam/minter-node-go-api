@@ -1,7 +1,9 @@
 package responses
 
 type ValidatorsResponse struct {
-	Response
+	Jsonrpc    string      `json:"jsonrpc"`
+	ID         string      `json:"id"`
+	Error      *ErrorData  `json:"error"`
 	Validators []Validator `json:"result"`
 }
 

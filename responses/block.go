@@ -3,8 +3,10 @@ package responses
 import "time"
 
 type BlockResponse struct {
-	Response
-	Result struct {
+	Jsonrpc string     `json:"jsonrpc"`
+	ID      string     `json:"id"`
+	Error   *ErrorData `json:"error"`
+	Result  struct {
 		Hash         string        `json:"hash"`
 		Size         string        `json:"size"`
 		Height       string        `json:"height"`
