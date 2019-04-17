@@ -1,8 +1,8 @@
 package minter_node_go_api
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/MinterTeam/go-amino"
 	"github.com/MinterTeam/minter-explorer-tools/models"
 	"github.com/MinterTeam/minter-node-go-api/responses"
 	"github.com/valyala/fasthttp"
@@ -13,15 +13,20 @@ import (
 type MinterNodeApi struct {
 	link   string
 	client *fasthttp.Client
+	cdc    *amino.Codec
 }
 
 func New(link string) *MinterNodeApi {
+	// Initialization
+	cdc := amino.NewCodec()
+
 	return &MinterNodeApi{
 		link: link,
 		client: &fasthttp.Client{
 			Name:            "Explorer Extender API",
 			MaxConnsPerHost: 1000,
 		},
+		cdc: cdc,
 	}
 }
 
@@ -55,59 +60,59 @@ func (api *MinterNodeApi) GetBlock(height uint64) (*responses.BlockResponse, err
 			switch tx.Type {
 			case models.TxTypeSend:
 				var txData = models.SendTxData{}
-				err = json.Unmarshal(tx.Data, &txData)
+				err = api.cdc.UnmarshalJSON(tx.Data, &txData)
 				response.Result.Transactions[i].IData = txData
 			case models.TxTypeSellCoin:
 				var txData = models.SellCoinTxData{}
-				err = json.Unmarshal(tx.Data, &txData)
+				err = api.cdc.UnmarshalJSON(tx.Data, &txData)
 				response.Result.Transactions[i].IData = txData
 			case models.TxTypeSellAllCoin:
 				var txData = models.SellAllCoinTxData{}
-				err = json.Unmarshal(tx.Data, &txData)
+				err = api.cdc.UnmarshalJSON(tx.Data, &txData)
 				response.Result.Transactions[i].IData = txData
 			case models.TxTypeBuyCoin:
 				var txData = models.BuyCoinTxData{}
-				err = json.Unmarshal(tx.Data, &txData)
+				err = api.cdc.UnmarshalJSON(tx.Data, &txData)
 				response.Result.Transactions[i].IData = txData
 			case models.TxTypeCreateCoin:
 				var txData = models.CreateCoinTxData{}
-				err = json.Unmarshal(tx.Data, &txData)
+				err = api.cdc.UnmarshalJSON(tx.Data, &txData)
 				response.Result.Transactions[i].IData = txData
 			case models.TxTypeDeclareCandidacy:
 				var txData = models.DeclareCandidacyTxData{}
-				err = json.Unmarshal(tx.Data, &txData)
+				err = api.cdc.UnmarshalJSON(tx.Data, &txData)
 				response.Result.Transactions[i].IData = txData
 			case models.TxTypeDelegate:
 				var txData = models.DelegateTxData{}
-				err = json.Unmarshal(tx.Data, &txData)
+				err = api.cdc.UnmarshalJSON(tx.Data, &txData)
 				response.Result.Transactions[i].IData = txData
 			case models.TxTypeUnbound:
 				var txData = models.UnbondTxData{}
-				err = json.Unmarshal(tx.Data, &txData)
+				err = api.cdc.UnmarshalJSON(tx.Data, &txData)
 				response.Result.Transactions[i].IData = txData
 			case models.TxTypeRedeemCheck:
 				var txData = models.RedeemCheckTxData{}
-				err = json.Unmarshal(tx.Data, &txData)
+				err = api.cdc.UnmarshalJSON(tx.Data, &txData)
 				response.Result.Transactions[i].IData = txData
 			case models.TxTypeSetCandidateOnline:
 				var txData = models.SetCandidateTxData{}
-				err = json.Unmarshal(tx.Data, &txData)
+				err = api.cdc.UnmarshalJSON(tx.Data, &txData)
 				response.Result.Transactions[i].IData = txData
 			case models.TxTypeSetCandidateOffline:
 				var txData = models.SetCandidateTxData{}
-				err = json.Unmarshal(tx.Data, &txData)
+				err = api.cdc.UnmarshalJSON(tx.Data, &txData)
 				response.Result.Transactions[i].IData = txData
 			case models.TxTypeMultiSig:
 				var txData = models.CreateMultisigTxData{}
-				err = json.Unmarshal(tx.Data, &txData)
+				err = api.cdc.UnmarshalJSON(tx.Data, &txData)
 				response.Result.Transactions[i].IData = txData
 			case models.TxTypeMultiSend:
 				var txData = models.MultiSendTxData{}
-				err = json.Unmarshal(tx.Data, &txData)
+				err = api.cdc.UnmarshalJSON(tx.Data, &txData)
 				response.Result.Transactions[i].IData = txData
 			case models.TxTypeEditCandidate:
 				var txData = models.EditCandidateTxData{}
-				err = json.Unmarshal(tx.Data, &txData)
+				err = api.cdc.UnmarshalJSON(tx.Data, &txData)
 				response.Result.Transactions[i].IData = txData
 			}
 		}
@@ -256,5 +261,6 @@ func (api *MinterNodeApi) getJson(url string, target interface{}) error {
 	if err != nil {
 		return err
 	}
-	return json.Unmarshal(body, target)
+
+	return api.cdc.UnmarshalJSON(body, target)
 }

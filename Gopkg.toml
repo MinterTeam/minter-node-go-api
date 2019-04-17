@@ -2,6 +2,10 @@
   name = "github.com/valyala/fasthttp"
   version = "20180529.0.0"
 
+[[constraint]]
+  name = "github.com/MinterTeam/go-amino"
+  version = "v0.14.1-m"
+
 [prune]
   go-tests = true
   unused-packages = true
