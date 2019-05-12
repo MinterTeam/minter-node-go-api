@@ -216,9 +216,9 @@ func (api *MinterNodeApi) GetEstimateCoinBuy(coinToSell string, coinToBuy string
 	return &response, err
 }
 
-func (api *MinterNodeApi) GetEstimateCoinSell(coinToSell string, coinToBuy string, value string) (*responses.EstimateCoinSellResponse, error) {
+func (api *MinterNodeApi) GetEstimateCoinSell(coinToSell string, coinToBuy string, value string, height uint64) (*responses.EstimateCoinSellResponse, error) {
 	response := responses.EstimateCoinSellResponse{}
-	link := api.link + `/estimate_coin_sell?coin_to_sell=` + coinToSell + `&coin_to_buy=` + coinToBuy + `&value_to_sell=` + value
+	link := api.link + `/estimate_coin_sell?coin_to_sell=` + coinToSell + `&coin_to_buy=` + coinToBuy + `&value_to_sell=` + value + `&height=` + height
 	err := api.getJson(link, &response)
 	if err != nil {
 		return nil, err
