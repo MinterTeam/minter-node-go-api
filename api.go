@@ -23,8 +23,8 @@ func New(link string) *MinterNodeApi {
 	return &MinterNodeApi{
 		link: link,
 		client: &fasthttp.Client{
-			Name:            "Explorer Extender API",
-			MaxConnsPerHost: 1000,
+			Name:                "Explorer Extender API",
+			MaxIdleConnDuration: 5,
 		},
 		cdc: cdc,
 	}
