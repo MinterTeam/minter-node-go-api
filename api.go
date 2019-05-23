@@ -256,6 +256,16 @@ func (api *MinterNodeApi) PushTransaction(tx string) (*responses.SendTransaction
 	return &response, err
 }
 
+func (api *MinterNodeApi) GetTransaction(hash string) (*responses.TransactionResponse, error) {
+	response := responses.TransactionResponse{}
+	link := api.link + `/transaction?hash=` + hash
+	err := api.getJson(link, &response)
+	if err != nil {
+		return nil, err
+	}
+	return &response, err
+}
+
 func (api *MinterNodeApi) getJson(url string, target interface{}) error {
 	_, body, err := api.client.Get(nil, url)
 	if err != nil {
