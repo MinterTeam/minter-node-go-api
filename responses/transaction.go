@@ -18,6 +18,7 @@ type TransactionsResponse struct {
 
 type Transaction struct {
 	Hash        string             `json:"hash"`
+	Height      string             `json:"height"`
 	From        string             `json:"from"`
 	Type        uint8              `json:"type"`
 	Nonce       string             `json:"nonce"`
