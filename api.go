@@ -15,6 +15,8 @@ type MinterNodeApi struct {
 	link   string
 	client *fasthttp.Client
 	cdc    *amino.Codec
+
+	fallbackRetries int
 }
 
 func New(link string) *MinterNodeApi {
@@ -28,6 +30,21 @@ func New(link string) *MinterNodeApi {
 			MaxIdleConnDuration: 5,
 		},
 		cdc: cdc,
+	}
+}
+
+func NewWithFallbackRetries(link string, fallbackRetries int) *MinterNodeApi {
+	// Initialization
+	cdc := amino.NewCodec()
+
+	return &MinterNodeApi{
+		link: link,
+		client: &fasthttp.Client{
+			Name:                "Explorer Extender API",
+			MaxIdleConnDuration: 5,
+		},
+		cdc:             cdc,
+		fallbackRetries: fallbackRetries,
 	}
 }
 
@@ -278,10 +295,25 @@ func (api *MinterNodeApi) GetTransaction(hash string) (*responses.TransactionRes
 }
 
 func (api *MinterNodeApi) getJson(url string, target interface{}) error {
-	_, body, err := api.client.Get(nil, url)
-	if err != nil {
-		return err
+	retries := 0
+
+	var err error
+	for retries <= api.fallbackRetries {
+		err = (func() error {
+			_, body, err := api.client.Get(nil, url)
+			if err != nil {
+				return err
+			}
+
+			err = api.cdc.UnmarshalJSON(body, target)
+
+			return err
+		})()
+		if err == nil {
+			return nil
+		}
+		retries++
 	}
 
-	return api.cdc.UnmarshalJSON(body, target)
+	return err
 }
