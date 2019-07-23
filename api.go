@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type MinterNodeApi struct {
@@ -17,6 +18,7 @@ type MinterNodeApi struct {
 	cdc    *amino.Codec
 
 	fallbackRetries int
+	fallbackTimeout time.Duration
 }
 
 func New(link string) *MinterNodeApi {
@@ -33,7 +35,7 @@ func New(link string) *MinterNodeApi {
 	}
 }
 
-func NewWithFallbackRetries(link string, fallbackRetries int) *MinterNodeApi {
+func NewWithFallbackRetries(link string, fallbackRetries int, fallbackTimeout time.Duration) *MinterNodeApi {
 	// Initialization
 	cdc := amino.NewCodec()
 
@@ -45,6 +47,7 @@ func NewWithFallbackRetries(link string, fallbackRetries int) *MinterNodeApi {
 		},
 		cdc:             cdc,
 		fallbackRetries: fallbackRetries,
+		fallbackTimeout: fallbackTimeout,
 	}
 }
 
@@ -313,6 +316,8 @@ func (api *MinterNodeApi) getJson(url string, target interface{}) error {
 			return nil
 		}
 		retries++
+
+		time.Sleep(api.fallbackTimeout)
 	}
 
 	return err
