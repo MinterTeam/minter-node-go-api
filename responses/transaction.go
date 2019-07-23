@@ -9,8 +9,16 @@ type TransactionResponse struct {
 	Result  Transaction `json:"result"`
 }
 
+type TransactionsResponse struct {
+	Jsonrpc string        `json:"jsonrpc"`
+	ID      string        `json:"id"`
+	Error   *ErrorData    `json:"error"`
+	Result  []Transaction `json:"result"`
+}
+
 type Transaction struct {
 	Hash        string             `json:"hash"`
+	Height      string             `json:"height"`
 	From        string             `json:"from"`
 	Type        uint8              `json:"type"`
 	Nonce       string             `json:"nonce"`

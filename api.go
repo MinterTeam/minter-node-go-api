@@ -6,6 +6,7 @@ import (
 	"github.com/MinterTeam/minter-explorer-tools/models"
 	"github.com/MinterTeam/minter-node-go-api/responses"
 	"github.com/valyala/fasthttp"
+	"net/url"
 	"strconv"
 	"strings"
 )
@@ -23,8 +24,8 @@ func New(link string) *MinterNodeApi {
 	return &MinterNodeApi{
 		link: link,
 		client: &fasthttp.Client{
-			Name:            "Explorer Extender API",
-			MaxConnsPerHost: 1000,
+			Name:                "Explorer Extender API",
+			MaxIdleConnDuration: 5,
 		},
 		cdc: cdc,
 	}
@@ -249,6 +250,26 @@ func (api *MinterNodeApi) GetMinGasPrice() (*responses.GasResponse, error) {
 func (api *MinterNodeApi) PushTransaction(tx string) (*responses.SendTransactionResponse, error) {
 	response := responses.SendTransactionResponse{}
 	link := api.link + `/send_transaction?tx=0x` + tx
+	err := api.getJson(link, &response)
+	if err != nil {
+		return nil, err
+	}
+	return &response, err
+}
+
+func (api *MinterNodeApi) GetTransactionsByQuery(query string) (*responses.TransactionsResponse, error) {
+	response := responses.TransactionsResponse{}
+	link := fmt.Sprintf(api.link+"/transactions?query=%s", url.QueryEscape(query))
+	err := api.getJson(link, &response)
+	if err != nil {
+		return nil, err
+	}
+	return &response, err
+}
+
+func (api *MinterNodeApi) GetTransaction(hash string) (*responses.TransactionResponse, error) {
+	response := responses.TransactionResponse{}
+	link := api.link + `/transaction?hash=` + hash
 	err := api.getJson(link, &response)
 	if err != nil {
 		return nil, err
