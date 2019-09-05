@@ -277,9 +277,9 @@ func (api *MinterNodeApi) PushTransaction(tx string) (*responses.SendTransaction
 	return &response, err
 }
 
-func (api *MinterNodeApi) GetTransactionsByQuery(query string) (*responses.TransactionsResponse, error) {
+func (api *MinterNodeApi) GetTransactionsByQuery(query string, page int, perPage int) (*responses.TransactionsResponse, error) {
 	response := responses.TransactionsResponse{}
-	link := fmt.Sprintf(api.link+"/transactions?query=%s", url.QueryEscape(query))
+	link := fmt.Sprintf("%s/transactions?query=%s&page=%d&perPage=%d", api.link, url.QueryEscape(query), page, perPage)
 	err := api.getJson(link, &response)
 	if err != nil {
 		return nil, err
