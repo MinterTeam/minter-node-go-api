@@ -29,6 +29,7 @@ func New(link string) *MinterNodeApi {
 		link: link,
 		client: &fasthttp.Client{
 			Name:                "Explorer Extender API",
+			ReadTimeout:         time.Minute,
 			MaxIdleConnDuration: 5,
 		},
 		cdc: cdc,
