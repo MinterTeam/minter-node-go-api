@@ -52,6 +52,10 @@ func NewWithFallbackRetries(link string, fallbackRetries int, fallbackTimeout ti
 	}
 }
 
+func (api *MinterNodeApi) SetHttpClient(client *fasthttp.Client) {
+	api.client = client
+}
+
 func (api *MinterNodeApi) SetLink(link string) {
 	api.link = link
 }
