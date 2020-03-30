@@ -7,4 +7,9 @@
     <img alt="undefined" src="https://img.shields.io/github/last-commit/MinterTeam/minter-node-go-api.svg">
 </p>
 
+# Deprecated
+It is deprecated. Use [minter-go-sdk](https://github.com/MinterTeam/minter-go-sdk) instead.
+
 # Minter Node API
+
+Go client for Node API v1
